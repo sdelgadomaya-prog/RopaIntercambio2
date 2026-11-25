@@ -1,15 +1,13 @@
 package es.safareyes.Interfaces;
-
-import es.safareyes.dta.ConsultaCategoriaCantidadProyeccion;
+import es.safareyes.dtos.ConsultaCategoriaCantidadProyeccion;
 import es.safareyes.modelos.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+public interface ICategoriaRepository extends JpaRepository<Categoria, Integer> {
 
-public interface ICategoriaRepository extends JpaRepository<Categoria, Long> {
-
-    //3ºconsulta
+    //3º consulta
     @Query(nativeQuery = true, value =
             "SELECT " +
                     "  c.id_categoria AS \"idCategoria\", " +

@@ -1,5 +1,4 @@
-package es.safareyes.dta;
-
+package es.safareyes.dtos;
 public interface ConsultaPerfilProyeccion {
     Long getIdPerfil();
     String getNombreCompleto();

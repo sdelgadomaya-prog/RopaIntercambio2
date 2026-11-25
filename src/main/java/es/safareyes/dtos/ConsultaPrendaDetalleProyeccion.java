@@ -1,7 +1,5 @@
-package es.safareyes.dta;
-
+package es.safareyes.dtos;
 import java.time.LocalDateTime;
-
 public interface ConsultaPrendaDetalleProyeccion {
     Long getIdPrenda();
     String getTitulo();

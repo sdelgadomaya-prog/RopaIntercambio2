@@ -1,4 +1,6 @@
+
 package es.safareyes.modelos;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,11 +46,18 @@ public class Prenda {
     @Column(name = "permite_intercambio", nullable = false)
     private Boolean permiteIntercambio = true;
 
-    // Valores permitidos: Nuevo, Excelente, Bueno, Regular
+    // Estado de conservación de la ropa
     @Column(name = "estado", nullable = false, length = 30)
     private String estado = "Bueno";
 
-    @Column(name = "fecha_publicacion", nullable = false, updatable = false)
+    // Estado de publicación de la prenda
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_publicacion", length = 20)
+    private EstadoPublicacionPrenda estadoPublicacion =
+            EstadoPublicacionPrenda.BORRADOR;
+
+    @Column(name = "fecha_publicacion",
+            nullable = false, updatable = false)
     private LocalDateTime fechaPublicacion;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -59,7 +68,11 @@ public class Prenda {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
-    @OneToMany(mappedBy = "prenda", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "prenda",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @OrderBy("orden ASC")
     @JsonIgnore
     private List<Foto> fotos = new ArrayList<>();

@@ -1,6 +1,8 @@
 package es.safareyes.Interfaces;
 
-import es.safareyes.dta.ConversacionProyeccion;
+import es.safareyes.dtos.ConversacionProyeccion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import es.safareyes.modelos.Mensaje;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +36,13 @@ public interface IMensajeRepository extends JpaRepository<Mensaje, Long> {
                     "WHERE s.id_solicitud = :idSolicitud " +
                     "ORDER BY m.fecha_envio DESC, m.hora_envio DESC")
     List<ConversacionProyeccion> obtenerConversacion(@Param("idSolicitud") Long idSolicitud);
+
+
+    // 14. GET - Consultar los mensajes de una solicitud
+    Page<Mensaje> findBySolicitud_IdSolicitudOrderByFechaEnvioDescHoraEnvioDesc(
+            Long idSolicitud,
+            Pageable pageable
+    );
+
+
 }

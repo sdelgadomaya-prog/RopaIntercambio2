@@ -13,13 +13,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long id;
 
-    // Aquí puedes añadir más campos de tu tabla 'usuario' (ej. username, password, etc.)
     @Column(name = "username", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "rol", nullable = false)
+    private String rol;
+
+    @Column(name = "contrasena", nullable = false)
+    private String contrasena;
 }

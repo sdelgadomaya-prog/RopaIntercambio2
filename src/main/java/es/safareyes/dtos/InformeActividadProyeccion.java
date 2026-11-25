@@ -1,5 +1,4 @@
-package es.safareyes.dta;
-
+package es.safareyes.dtos;
 public interface InformeActividadProyeccion {
     String getMes();
     String getCategoria();

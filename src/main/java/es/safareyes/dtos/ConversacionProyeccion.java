@@ -1,8 +1,6 @@
-package es.safareyes.dta;
-
+package es.safareyes.dtos;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
 public interface ConversacionProyeccion {
     Long getIdMensaje();
     Long getIdSolicitud();

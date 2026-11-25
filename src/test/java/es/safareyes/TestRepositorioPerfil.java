@@ -1,8 +1,8 @@
 package es.safareyes;
 
 import es.safareyes.Interfaces.IPerfilRepository;
-import es.safareyes.dta.ConsultaPerfilAfinProyeccion;
-import es.safareyes.dta.ConsultaPerfilProyeccion;
+import es.safareyes.dtos.ConsultaPerfilAfinProyeccion;
+import es.safareyes.dtos.ConsultaPerfilProyeccion;
 import es.safareyes.modelos.Perfil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

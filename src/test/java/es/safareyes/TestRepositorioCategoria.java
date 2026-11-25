@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.List;
 
-import es.safareyes.dta.ConsultaCategoriaCantidadProyeccion;
+import es.safareyes.dtos.ConsultaCategoriaCantidadProyeccion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

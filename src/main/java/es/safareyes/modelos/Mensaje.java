@@ -39,6 +39,13 @@ public class Mensaje {
     @JoinColumn(name = "id_perfil_remitente", nullable = false)
     private Perfil remitente;
 
+
+    // Solicitud a la que pertenece el mensaje
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_solicitud")
+    private Solicitud solicitud;
+
+
     @PrePersist
     void alCrear() {
         if (fechaEnvio == null) fechaEnvio = LocalDate.now();

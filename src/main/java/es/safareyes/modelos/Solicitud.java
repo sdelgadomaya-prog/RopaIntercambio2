@@ -1,3 +1,4 @@
+
 package es.safareyes.modelos;
 
 import jakarta.persistence.*;
@@ -24,40 +25,59 @@ public class Solicitud {
     @Column(name = "id_solicitud")
     private Long idSolicitud;
 
-    // Valores permitidos: Intercambio, Prestamo
+    // Tipo: Intercambio o Prestamo
     @Column(name = "tipo_solicitud", nullable = false, length = 20)
     private String tipoSolicitud;
 
+    // Fecha de creación
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
+    // Fecha de respuesta
     @Column(name = "fecha_respuesta")
     private LocalDateTime fechaRespuesta;
 
-    // Valores permitidos: Pendiente, Aceptada, Rechazada, Cancelada, Finalizada
+    // Estado de la solicitud
     @Column(name = "estado", nullable = false, length = 20)
     private String estado = "Pendiente";
 
+    // Fechas del préstamo
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
 
     @Column(name = "fecha_fin")
     private LocalDate fechaFin;
 
+    // Persona que realiza la solicitud
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_perfil_origen", nullable = false)
     private Perfil perfilOrigen;
 
+    // Persona que recibe la solicitud
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_perfil_destino", nullable = false)
     private Perfil perfilDestino;
 
+    // NUEVO: Prenda que queremos conseguir
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_prenda_solicitada", nullable = false)
+    private Prenda prendaSolicitada;
+
+    // NUEVO: Prenda ofrecida en un intercambio
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_prenda_ofrecida")
+    private Prenda prendaOfrecida;
+
+    // Relación anterior: la conservamos temporalmente
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "solicitud_prenda",
+    @JoinTable(
+            name = "solicitud_prenda",
             joinColumns = @JoinColumn(name = "id_solicitud"),
-            inverseJoinColumns = @JoinColumn(name = "id_prenda"))
+            inverseJoinColumns = @JoinColumn(name = "id_prenda")
+    )
     private Set<Prenda> prendas = new HashSet<>();
 
+    // Establecer la fecha automáticamente al crear
     @PrePersist
     void alCrear() {
         if (fechaCreacion == null) {

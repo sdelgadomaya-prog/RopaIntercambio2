@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import es.safareyes.dta.ConsultaPrendaDetalleProyeccion;
-import es.safareyes.dta.ConsultaPrendasPagProyeccion;
-import es.safareyes.dta.InformeActividadProyeccion;
+import es.safareyes.dtos.ConsultaPrendaDetalleProyeccion;
+import es.safareyes.dtos.ConsultaPrendasPagProyeccion;
+import es.safareyes.dtos.InformeActividadProyeccion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

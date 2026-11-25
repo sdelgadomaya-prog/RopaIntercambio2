@@ -21,7 +21,6 @@ public class Perfil {
     @Column(name = "id_perfil")
     private Long idPerfil;
 
-
     @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 

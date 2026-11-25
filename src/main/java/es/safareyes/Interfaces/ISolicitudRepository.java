@@ -1,16 +1,19 @@
+
 package es.safareyes.Interfaces;
 
-import es.safareyes.dta.ConsultaSolicitudProyeccion;
+import es.safareyes.dtos.ConsultaSolicitudProyeccion;
 import es.safareyes.modelos.Solicitud;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ISolicitudRepository extends JpaRepository<Solicitud, Long> {
+public interface ISolicitudRepository
+        extends JpaRepository<Solicitud, Long> {
 
-    //consulta nº6: solicitudes enviadas (las que él ha solicitado)
+    // Consulta nº6: solicitudes enviadas
     @Query(nativeQuery = true, value =
             "SELECT " +
                     "  s.id_solicitud AS \"idSolicitud\", " +
@@ -27,9 +30,11 @@ public interface ISolicitudRepository extends JpaRepository<Solicitud, Long> {
                     "  AND (CAST(:estado AS VARCHAR) IS NULL OR s.estado = CAST(:estado AS VARCHAR)) " +
                     "ORDER BY s.fecha_creacion DESC")
     List<ConsultaSolicitudProyeccion> obtenerSolicitudesEnviadas(
-            @Param("idPerfil") Long idPerfil, @Param("estado") String estado);
+            @Param("idPerfil") Long idPerfil,
+            @Param("estado") String estado
+    );
 
-    //consulta nº6: solicitudes recibidas (le han solicitado)
+    // Consulta nº6: solicitudes recibidas
     @Query(nativeQuery = true, value =
             "SELECT " +
                     "  s.id_solicitud AS \"idSolicitud\", " +
@@ -46,5 +51,41 @@ public interface ISolicitudRepository extends JpaRepository<Solicitud, Long> {
                     "  AND (CAST(:estado AS VARCHAR) IS NULL OR s.estado = CAST(:estado AS VARCHAR)) " +
                     "ORDER BY s.fecha_creacion DESC")
     List<ConsultaSolicitudProyeccion> obtenerSolicitudesRecibidas(
-            @Param("idPerfil") Long idPerfil, @Param("estado") String estado);
+            @Param("idPerfil") Long idPerfil,
+            @Param("estado") String estado
+    );
+
+
+    // NUEVO 1: Comprobar si existe una solicitud pendiente
+    // del mismo usuario para la misma prenda
+    boolean existsByPerfilOrigen_IdPerfilAndPrendaSolicitada_IdPrendaAndEstado(
+            Long idPerfil,
+            Long idPrenda,
+            String estado
+    );
+
+
+    // NUEVO 2: Contar los préstamos activos de un usuario
+    long countByPerfilOrigen_IdPerfilAndTipoSolicitudAndEstadoIn(
+            Long idPerfil,
+            String tipoSolicitud,
+            List<String> estados
+    );
+
+
+    // Buscar solicitudes pendientes de una prenda
+    List<Solicitud> findByPrendaSolicitada_IdPrendaAndEstado(
+            Long idPrenda,
+            String estado
+    );
+
+
+    // Buscar solicitudes donde una prenda se ofrece en un intercambio
+    List<Solicitud> findByPrendaOfrecida_IdPrendaAndEstado(
+            Long idPrenda,
+            String estado
+    );
+
+
+
 }

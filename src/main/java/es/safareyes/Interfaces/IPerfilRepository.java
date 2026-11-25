@@ -1,7 +1,7 @@
 package es.safareyes.Interfaces;
 
-import es.safareyes.dta.ConsultaPerfilAfinProyeccion;
-import es.safareyes.dta.ConsultaPerfilProyeccion;
+import es.safareyes.dtos.ConsultaPerfilAfinProyeccion;
+import es.safareyes.dtos.ConsultaPerfilProyeccion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import es.safareyes.modelos.Perfil;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,8 @@ import java.util.Optional;
 
 public interface IPerfilRepository extends JpaRepository<Perfil, Long> {
     Optional<Perfil> findByEmail(String email);
-
+    // Comprobar si el correo ya está registrado
+    boolean existsByEmailIgnoreCase(String email);
     Optional<Perfil> findByUsuarioId(Long idUsuario);
 
     List<Perfil> findByCiudadIgnoreCase(String ciudad);
@@ -42,7 +43,7 @@ public interface IPerfilRepository extends JpaRepository<Perfil, Long> {
                     "  JOIN reputacion_perfil rep ON rep.id_perfil = p.id_perfil " +
                     "  LEFT JOIN perfil_estilos pe ON pe.id_perfil = p.id_perfil " +
                     "  LEFT JOIN estilos e ON e.id_estilo = pe.id_estilo " +
-                    "WHERE p.id_perfil = :id " +
+                    "WHERE p.id_usuario = :id " +
                     "GROUP BY p.id_perfil, rep.reputacion")
     Optional<ConsultaPerfilProyeccion> obtenerPerfil(@Param("id") Long id);
 

@@ -4,4 +4,6 @@ import es.safareyes.modelos.Foto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IFotoRepository extends JpaRepository<Foto, Long> {
+    long countByPrenda_IdPrenda(Long idPrenda);
+
 }

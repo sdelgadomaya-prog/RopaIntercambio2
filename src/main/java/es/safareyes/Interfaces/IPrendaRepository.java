@@ -1,8 +1,8 @@
 package es.safareyes.Interfaces;
 
-import es.safareyes.dta.ConsultaPrendaDetalleProyeccion;
-import es.safareyes.dta.ConsultaPrendasPagProyeccion;
-import es.safareyes.dta.InformeActividadProyeccion;
+import es.safareyes.dtos.ConsultaPrendaDetalleProyeccion;
+import es.safareyes.dtos.ConsultaPrendasPagProyeccion;
+import es.safareyes.dtos.InformeActividadProyeccion;
 import es.safareyes.modelos.Prenda;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +31,7 @@ public interface IPrendaRepository extends JpaRepository<Prenda, Long> {
             JOIN categoria c ON c.id_categoria = pr.id_categoria
             JOIN perfil pe ON pe.id_perfil = pr.id_perfil
         WHERE pr.disponibilidad = TRUE
+          AND pr.estado_publicacion = 'DISPONIBLE'
           AND (CAST(:categoria AS BIGINT) IS NULL OR c.id_categoria = :categoria)
           AND (CAST(:texto AS TEXT) IS NULL
                OR LOWER(pr.titulo) LIKE LOWER(CONCAT('%', CAST(:texto AS TEXT), '%')))
@@ -42,6 +43,7 @@ public interface IPrendaRepository extends JpaRepository<Prenda, Long> {
         FROM prenda pr
             JOIN categoria c ON c.id_categoria = pr.id_categoria
         WHERE pr.disponibilidad = TRUE
+          AND pr.estado_publicacion = 'DISPONIBLE'
           AND (CAST(:categoria AS BIGINT) IS NULL OR c.id_categoria = :categoria)
           AND (CAST(:texto AS TEXT) IS NULL
                OR LOWER(pr.titulo) LIKE LOWER(CONCAT('%', CAST(:texto AS TEXT), '%')))
@@ -96,15 +98,17 @@ public interface IPrendaRepository extends JpaRepository<Prenda, Long> {
                     "         1 AS publicaciones, 0 AS intercambios, 0 AS prestamos " +
                     "  FROM prenda pr " +
                     "    JOIN categoria c ON c.id_categoria = pr.id_categoria " +
+                    "  WHERE pr.estado_publicacion IS NOT NULL " +
+                    "    AND pr.estado_publicacion <> 'BORRADOR' " +
                     "  UNION ALL " +
                     "  SELECT s.fecha_creacion AS fecha, c.nombre AS categoria, " +
                     "         0 AS publicaciones, " +
                     "         CASE WHEN s.tipo_solicitud = 'Intercambio' THEN 1 ELSE 0 END AS intercambios, " +
                     "         CASE WHEN s.tipo_solicitud = 'Prestamo' THEN 1 ELSE 0 END AS prestamos " +
                     "  FROM solicitudes s " +
-                    "    JOIN solicitud_prenda sp ON sp.id_solicitud = s.id_solicitud " +
-                    "    JOIN prenda pr ON pr.id_prenda = sp.id_prenda " +
+                    "    JOIN prenda pr ON pr.id_prenda = s.id_prenda_solicitada " +
                     "    JOIN categoria c ON c.id_categoria = pr.id_categoria " +
+                    "  WHERE s.estado IN ('Aceptada', 'Retrasada', 'Finalizada') " +
                     ") a " +
                     "WHERE a.fecha >= CAST(:desde AS DATE) " +
                     "  AND a.fecha < CAST(:hasta AS DATE) + 1 " +
